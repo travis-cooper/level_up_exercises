@@ -55,8 +55,9 @@ def show_search(search_results)
         puts key + ": " + value
       end
     end
-    print "Search found " + search_results.size.to_s +  " dinos\n"
+    print "\n"
   end
+  print "Search found " + search_results.size.to_s +  " dinos\n"
 end
 
 def process_command(command, prev_search, whole_catalog)
