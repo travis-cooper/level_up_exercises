@@ -108,7 +108,7 @@ def search_for(command, catalog)
   value = command[2]
   result = []
   catalog.each do |dino|
-    if dino[field].downcase == value.downcase
+    if dino[field].downcase.split(' ').include? value.downcase
       result.push(dino)
     end
   end
