@@ -7,7 +7,7 @@ def load_dinodex(dino_array, filename)
     dino["name"] = row["NAME"]
     dino["period"] = row["PERIOD"]
     dino["walk"] = row["WALKING"]
-    dino["diet"] = row["DIET"]
+    dino["diet"] = row["DIET"] != "Herbivore" ? "Carnivore" : row["DIET"]
     dino["size"] = row["WEIGHT_IN_LBS"].to_i > 4000 ? "Big" : "Small"
     dino_array.push(dino)
   end
@@ -44,7 +44,23 @@ def show_help()
     walk
     diet
     size
+  Quick Searches -- if you type the following commands they will give you
+    a quick search of results
+  twolegs -- returns all biped dinosaurs
+  meatlovers -- returns all carnivores
+  bigboys -- returns all dinos over 2 tons in weight
   """
+end
+
+def make_quick_search(command)
+  if command[0] == 'twolegs'
+    command = ['find', 'walk', 'bidped']
+  elsif command[0] == 'meatlovers'
+    command = ['find', 'diet', 'carnivore']
+  elsif command[0] == 'bigboys'
+    command = ['find', 'size', 'big']
+  end
+  return command 
 end
 
 def show_search(search_results)
@@ -61,6 +77,7 @@ def show_search(search_results)
 end
 
 def process_command(command, prev_search, whole_catalog)
+  quick_search = ['twolegs', 'meatlovers', 'bigboys']
   if command[0] == "q"
     return 
   elsif command[0] == "?"
@@ -75,11 +92,15 @@ def process_command(command, prev_search, whole_catalog)
     prev_search = search_for(command, prev_search)
     show_search(prev_search)
     return prev_search
+  elsif quick_search.include? command[0]
+    command = make_quick_search(command)
+    prev_search = search_for(command, prev_search)
+    show_search(prev_search)
+    return prev_search
   else
     puts "Not a valid command: type '?' for help"
     return prev_search
   end
-
 end
 
 def search_for(command, catalog)
